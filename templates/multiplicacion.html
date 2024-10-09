@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Multiplicación de Matrices</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 min-h-screen flex items-center justify-center">
+    <div class="bg-white p-8 rounded-lg shadow-md w-full max-w-2xl">
+        <h1 class="text-3xl font-bold mb-6 text-center text-blue-600">Multiplicación de Matrices 3x3</h1>
+        
+        <div class="grid grid-cols-2 gap-8 mb-6">
+            <div>
+                <h2 class="text-xl font-semibold mb-2 text-gray-700">Matriz 1</h2>
+                <div id="matriz1" class="grid grid-cols-3 gap-2"></div>
+            </div>
+            <div>
+                <h2 class="text-xl font-semibold mb-2 text-gray-700">Matriz 2</h2>
+                <div id="matriz2" class="grid grid-cols-3 gap-2"></div>
+            </div>
+        </div>
+        
+        <button id="multiplicar" class="w-full bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 transition duration-300">Multiplicar</button>
+        
+        <div class="mt-6">
+            <h2 class="text-xl font-semibold mb-2 text-gray-700">Resultado</h2>
+            <div id="resultado" class="grid grid-cols-3 gap-2"></div>
+        </div>
+    </div>
+
+    <script>
+        function crearMatriz(id) {
+            const matriz = document.getElementById(id);
+            for (let i = 0; i < 9; i++) {
+                const input = document.createElement('input');
+                input.type = 'number';
+                input.className = 'w-full p-2 border border-gray-300 rounded';
+                input.value = Math.floor(Math.random() * 10);
+                matriz.appendChild(input);
+            }
+        }
+
+        function obtenerMatriz(id) {
+            const inputs = document.querySelectorAll(`#${id} input`);
+            const matriz = [];
+            for (let i = 0; i < 3; i++) {
+                matriz.push([]);
+                for (let j = 0; j < 3; j++) {
+                    matriz[i].push(parseInt(inputs[i * 3 + j].value));
+                }
+            }
+            return matriz;
+        }
+
+        function mostrarResultado(resultado) {
+            const resultadoDiv = document.getElementById('resultado');
+            resultadoDiv.innerHTML = '';
+            for (let i = 0; i < 3; i++) {
+                for (let j = 0; j < 3; j++) {
+                    const span = document.createElement('span');
+                    span.className = 'w-full p-2 border border-gray-300 rounded bg-gray-100 text-center';
+                    span.textContent = resultado[i][j];
+                    resultadoDiv.appendChild(span);
+                }
+            }
+        }
+
+        crearMatriz('matriz1');
+        crearMatriz('matriz2');
+
+        document.getElementById('multiplicar').addEventListener('click', () => {
+            const mat1 = obtenerMatriz('matriz1');
+            const mat2 = obtenerMatriz('matriz2');
+
+            fetch('/multiplicar', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ mat1, mat2 }),
+            })
+            .then(response => response.json())
+            .then(resultado => mostrarResultado(resultado))
+            .catch(error => console.error('Error:', error));
+        });
+    </script>
+</body>
+</html>
