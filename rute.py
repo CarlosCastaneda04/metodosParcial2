@@ -12,26 +12,38 @@ def inicio():
 def cofactor():
     if request.method == 'POST':
         try:
-            # Captura la matriz enviada por el formulario
-            matriz = request.form['matriz']
-            # Convierte la matriz de texto a una lista de listas de enteros
-            filas = matriz.splitlines()
-            a = [list(map(int, fila.split(','))) for fila in filas]
+            # Capturar los valores de la matriz desde el formulario
+            a = [
+                [int(request.form['a00']), int(request.form['a01']), int(request.form['a02'])],
+                [int(request.form['a10']), int(request.form['a11']), int(request.form['a12'])],
+                [int(request.form['a20']), int(request.form['a21']), int(request.form['a22'])]
+            ]
 
             # Calcula el determinante y la inversa
             invM, det = calcular_determinante_y_inversa(a)
 
+            print(f"Determinante: {det}")
+
+            # Si el determinante es 0, mostrar mensaje de error
+            if det == 0:
+                error = "La matriz no tiene inversa porque el determinante es 0."
+                return render_template('cofactor.html', error=error)
+
+            # Si hay una inversa, mostrar los resultados
             if invM:
                 return render_template('cofactor.html', invM=invM, det=det)
             else:
-                error = det  # Este es el mensaje de error si el determinante es 0
+                error = "Error en el cálculo de la matriz inversa."
                 return render_template('cofactor.html', error=error)
         except Exception as e:
             # Maneja cualquier error en el cálculo o formato
-            error = "Hubo un error procesando la matriz. Asegúrate de ingresar una matriz 3x3 correctamente."
+            error = f"Hubo un error procesando la matriz: {e}"
             return render_template('cofactor.html', error=error)
 
     return render_template('cofactor.html')
+
+
+
 
 @app.route('/multiplicacion')
 def multiplicacion():
