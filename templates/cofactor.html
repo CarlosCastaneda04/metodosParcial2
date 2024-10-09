@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cálculo de Cofactor y Determinante</title>
+    <title>Cálculo de Determinante e Inversa</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <style>
         body {
@@ -14,19 +14,31 @@
             max-width: 700px;
         }
         h1 {
-            color: #343a40;
-        }
-        table {
-            margin-top: 20px;
-            width: 100%;
-            border-collapse: collapse;
-        }
-        table, th, td {
-            border: 1px solid #343a40;
-        }
-        th, td {
-            padding: 10px;
+            color: #007bff;
             text-align: center;
+            margin-bottom: 20px;
+        }
+        .form-group {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        .form-group input {
+            width: 60px;
+            height: 50px;
+            text-align: center;
+            font-size: 1.5em;
+            -moz-appearance: textfield; /* Quitar las flechas de los inputs */
+        }
+        .form-group input::-webkit-outer-spin-button,
+        .form-group input::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+        .btn {
+            width: 100%;
+            margin-top: 20px;
         }
         footer {
             margin-top: 40px;
@@ -35,25 +47,41 @@
             color: #fff;
             text-align: center;
         }
-        .btn {
-            margin-top: 20px;
-        }
     </style>
 </head>
 <body>
 
     <div class="container">
-        <h1 class="text-center">Cálculo de Determinante e Inversa</h1>
+        <h1>Cálculo de Determinante e Inversa</h1>
         <form method="POST" action="/cofactor">
             <div class="form-group">
-                <label for="matriz">Ingresa los valores de la matriz 3x3 (separados por comas y filas separadas por saltos de línea):</label>
-                <textarea class="form-control" id="matriz" name="matriz" rows="5" placeholder="Ejemplo:
-1, 2, 3
-4, 5, 6
-7, 8, 9"></textarea>
+                <!-- Fila 1 -->
+                <input type="number" class="form-control" name="a00" value="{{ request.form.get('a00', '') }}">
+                <input type="number" class="form-control" name="a01" value="{{ request.form.get('a01', '') }}">
+                <input type="number" class="form-control" name="a02" value="{{ request.form.get('a02', '') }}">
             </div>
-            <button type="submit" class="btn btn-primary btn-block">Calcular Determinante e Inversa</button>
+            <div class="form-group">
+                <!-- Fila 2 -->
+                <input type="number" class="form-control" name="a10" value="{{ request.form.get('a10', '') }}">
+                <input type="number" class="form-control" name="a11" value="{{ request.form.get('a11', '') }}">
+                <input type="number" class="form-control" name="a12" value="{{ request.form.get('a12', '') }}">
+            </div>
+            <div class="form-group">
+                <!-- Fila 3 -->
+                <input type="number" class="form-control" name="a20" value="{{ request.form.get('a20', '') }}">
+                <input type="number" class="form-control" name="a21" value="{{ request.form.get('a21', '') }}">
+                <input type="number" class="form-control" name="a22" value="{{ request.form.get('a22', '') }}">
+            </div>
+
+            <button type="submit" class="btn btn-primary">Calcular Determinante e Inversa</button>
+            <button type="button" class="btn btn-secondary" onclick="limpiarCampos()">Limpiar Campos</button>
         </form>
+
+        {% if error %}
+        <div class="alert alert-danger mt-4">
+            {{ error }}
+        </div>
+        {% endif %}
 
         {% if det is not none %}
         <div class="mt-4">
@@ -72,16 +100,18 @@
             </table>
             {% endif %}
         </div>
-        {% elif error %}
-        <div class="alert alert-danger mt-4">
-            {{ error }}
-        </div>
         {% endif %}
     </div>
 
     <footer>
         <p>&copy; 2024 Proyecto de Matrices con Flask</p>
     </footer>
+
+    <script>
+        function limpiarCampos() {
+            document.querySelectorAll('input').forEach(input => input.value = '');
+        }
+    </script>
 
 </body>
 </html>
