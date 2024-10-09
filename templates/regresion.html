@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Regresión Lineal por Mínimos Cuadrados</title>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='regresion.css') }}"
+    />
+    <script>
+      function generarInputs() {
+        const numInputs = document.getElementById("num_inputs").value; // Obtener el número de inputs deseados
+        const xContainer = document.getElementById("x_container");
+        const yContainer = document.getElementById("y_container");
+
+        xContainer.innerHTML = "";
+        yContainer.innerHTML = "";
+
+        for (let i = 0; i < numInputs; i++) {
+          const inputX = document.createElement("input");
+          inputX.type = "text";
+          inputX.name = "x_values[]";
+          inputX.className = "input";
+          inputX.required = true;
+          xContainer.appendChild(inputX);
+
+          if (i < numInputs - 1) {
+            xContainer.appendChild(document.createTextNode(", "));
+          }
+
+          const inputY = document.createElement("input");
+          inputY.type = "text";
+          inputY.name = "y_values[]";
+          inputY.className = "input";
+          inputY.required = true;
+          yContainer.appendChild(inputY);
+
+          if (i < numInputs - 1) {
+            yContainer.appendChild(document.createTextNode(", "));
+          }
+        }
+      }
+
+      window.addEventListener("load", function () {
+        document.body.classList.add("loaded");
+      });
+    </script>
+  </head>
+  <body>
+    <nav class="navbar">
+      <div class="navbar-logo">
+        <a href="{{ url_for('index')}}">
+          <img
+            src="{{ url_for('static', filename='images/logo.png') }}"
+            alt="Logo"
+            class="logo"
+          />
+        </a>
+      </div>
+      <ul class="nav-links">
+        <li>
+          <a href="{{ url_for('index') }}">Matriz con Operaciones básicas</a>
+        </li>
+        <li>
+          <a href="{{ url_for('cofactor') }}">Metodo de Cofactores</a>
+        </li>
+        <li>
+          <a href="{{ url_for('reduccion') }}"
+            >Reducción de Sistemas de Ecuaciones</a
+          >
+        </li>
+        <li><a href="{{ url_for('regresion') }}">Regresión Lineal</a></li>
+      </ul>
+    </nav>
+
+    <h1>Regresión Lineal por Mínimos Cuadrados</h1>
+
+    <form id="input_form" action="javascript:void(0);">
+      <label for="num_inputs" class="valores">N valores:</label><br />
+      <input type="number" id="num_inputs" name="num_inputs" min="1" required />
+
+      <div class="text-center mt-4 login-box">
+        <button onclick="generarInputs()" type="submit" class="btn btn-primary">
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
+          OK
+        </button>
+      </div>
+    </form>
+
+    <br />
+
+    <form action="/regresion_calculo" method="POST">
+      <h3 class="ingresarvalores">Ingrese los valores de X y de Y:</h3>
+
+      <label class="valoresxy">Valores de X:</label>
+      <div id="x_container"></div>
+
+      <br /><br />
+
+      <label class="valoresxy">Valores de Y:</label>
+      <div id="y_container"></div>
+
+      <br /><br />
+
+      <div class="text-center mt-4 login-box">
+        <button type="submit" class="btn btn-primary">
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
+          Calcular Regresion
+        </button>
+      </div>
+    </form>
+
+    {% if m and b %}
+    <h3>Resultados:</h3>
+    <p>Pendiente (m): {{ m }}</p>
+    <p>Intersección (b): {{ b }}</p>
+    <img src="{{ plot_url }}" alt="Gráfico de Regresión Lineal" />
+    {% endif %}
+
+    {% if error %}
+    <p style="color: red">{{ error }}</p>
+    {% endif %}
+  </body>
+</html>

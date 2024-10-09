@@ -1,0 +1,441 @@
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: #000000; /* Fondo oscuro */
+    color: #fff;
+    opacity: 0;
+    transition: opacity 1.5s ease-in;
+}
+
+body.loaded {
+    opacity: 1;
+}
+
+.animated-line {
+    border: none;
+    height: 2px;
+    background-color: transparent; /* Línea transparente para que no interfiera */
+    position: relative;
+    overflow: hidden;
+}
+
+.animated-line::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 2px;
+    background: linear-gradient(180deg, transparent, #03e9f4, transparent);
+    animation: anim-line 1s linear infinite;
+    animation-delay: 0.5s;
+}
+
+@keyframes anim-line {
+    0% {
+        left: -100%;
+    }
+    50%,
+    100% {
+        left: 100%;
+    }
+}
+
+
+.content {
+    padding: 20px;
+    color: white;
+}
+
+/* Estilos de la navbar */
+.navbar {
+    display: flex;
+    justify-content: space-between; /* Distribuye el logo, los enlaces y la parte derecha */
+    align-items: center;
+    background-color: #000000; /* Fondo de la navbar */
+    padding: 10px 20px;
+    border-bottom: 1px solid #333;
+}
+
+.navbar-logo {
+    flex: 1; /* Logo ocupa espacio, pero no afecta el centrado de los enlaces */
+}
+
+.logo {
+    width: 80px; /* Tamaño del logo */
+}
+
+/* Centrar los enlaces */
+.nav-links {
+    display: flex;
+    justify-content: center;
+    flex-grow: 2; /* Ocupa más espacio para centrar los enlaces */
+    list-style-type: none;
+    gap: 30px; /* Espacio entre los links */
+    margin-right: 20%;
+    margin-top: 20px;
+    padding: 0;
+}
+
+.nav-links li {
+    display: inline-block;
+}
+
+.nav-links a {
+    text-decoration: none;
+    color: #fff; /* Color blanco para los enlaces */
+    font-size: 16px;
+    padding: 5px 0; /* Añade algo de espacio alrededor del texto */
+    position: relative;
+    transition: all 0.3s ease-in-out; /* Suaviza la animación */
+}
+
+.nav-links a::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 3px;
+    background-color: white; /* Color del borde */
+    transform: scaleX(0); /* Inicialmente invisible */
+    transition: transform 0.3s ease-in-out; /* Transición suave */
+}
+
+.nav-links a:hover::after {
+    transform: scaleX(1); /* Borde crece horizontalmente */
+}
+
+.matrix-input {
+    width: 50px;
+    text-align: center;
+    margin-top: 10px;
+}
+table {
+    margin: 20px auto;
+}
+td {
+    padding: 10px;
+}
+.result {
+    text-align: center;
+    margin-top: 20px;
+}
+.error {
+    color: red;
+    text-align: center;
+}
+
+/* Contenedor de las matrices */
+#matriz1, #matriz2 {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+}
+
+/* Estilo de cada fila de la matriz */
+#matriz1 .row, #matriz2 .row {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 10px; /* Espacio entre filas */
+}
+
+/* Estilo de los inputs dentro de las matrices */
+#matriz1 input, #matriz2 input {
+    text-align: center;
+    color: #fff;
+    margin-right: 10px; /* Espacio entre columnas */
+    font-size: 1.2rem;
+    width: 60px; /* Tamaño de cada celda */
+    height: 60px;
+    border-radius: 5px;
+    border: 2px solid rgb(255, 255, 255);
+    background-color: #000000;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    transition: border-color 0.3s ease;
+}
+
+/* Estilo cuando se hace focus en un input */
+#matriz1 input:focus, #matriz2 input:focus {
+    border-color: #0080b3;
+    outline: none;
+}
+
+/* Estilo adicional para que se vea mejor en pantallas pequeñas */
+@media (max-width: 768px) {
+    #matriz1 input, #matriz2 input {
+        width: 45px; /* Tamaño más pequeño para pantallas pequeñas */
+        height: 45px;
+        font-size: 1rem;
+    }
+}
+
+/* Estilos del contenedor del botón con animación */
+
+.login-box {
+    position: relative;
+    display: inline-block;
+}
+
+.login-box button {
+    position: relative;
+    display: inline-block;
+    padding: 10px 20px;
+    color: #fff;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-size: 16px;
+    overflow: hidden;
+    transition: 0.5s;
+    background-color: #03a8f400; /* Color base del botón */
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.login-box button:hover {
+    background: #438d91;
+    color: #fff;
+    box-shadow: 0 0 5px #03e9f4, 0 0 25px #03e9f4, 0 0 50px #03e9f4, 0 0 100px #03e9f4;
+}
+
+.login-box button span {
+    position: absolute;
+    display: block;
+}
+
+/* Animación de los bordes del botón */
+.login-box button span:nth-child(1) {
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, #03e9f4);
+    animation: btn-anim1 1s linear infinite;
+}
+
+@keyframes btn-anim1 {
+    0% {
+        left: -100%;
+    }
+    50%, 100% {
+        left: 100%;
+    }
+}
+
+.login-box button span:nth-child(2) {
+    top: -100%;
+    right: 0;
+    width: 2px;
+    height: 100%;
+    background: linear-gradient(180deg, transparent, #03e9f4);
+    animation: btn-anim2 1s linear infinite;
+    animation-delay: 0.25s;
+}
+
+@keyframes btn-anim2 {
+    0% {
+        top: -100%;
+    }
+    50%, 100% {
+        top: 100%;
+    }
+}
+
+.login-box button span:nth-child(3) {
+    bottom: 0;
+    right: -100%;
+    width: 100%;
+    height: 2px;
+    background: linear-gradient(270deg, transparent, #03e9f4);
+    animation: btn-anim3 1s linear infinite;
+    animation-delay: 0.5s;
+}
+
+@keyframes btn-anim3 {
+    0% {
+        right: -100%;
+    }
+    50%, 100% {
+        right: 100%;
+    }
+}
+
+.login-box button span:nth-child(4) {
+    bottom: -100%;
+    left: 0;
+    width: 2px;
+    height: 100%;
+    background: linear-gradient(360deg, transparent, #03e9f4);
+    animation: btn-anim4 1s linear infinite;
+    animation-delay: 0.75s;
+}
+
+@keyframes btn-anim4 {
+    0% {
+        bottom: -100%;
+    }
+    50%, 100% {
+        bottom: 100%;
+    }
+}
+
+/* Estilos para la tabla de resultados */
+.table-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    margin-top: 25px;
+}
+
+.table-bordered {
+    width: 50%;
+    border-collapse: collapse;
+    margin: 25px 0;
+    font-size: 18px;
+    text-align: center;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    background-color: #000000;
+    color: #ffffff;
+}
+
+.table-bordered th,
+.table-bordered td {
+    border: 1px solid #ddd;
+    padding: 12px 80px;
+}
+
+.table-bordered th {
+    background-color: #03a9f4; /* Color de fondo para el encabezado */
+    color: #fff;
+    text-transform: uppercase;
+    font-weight: 600;
+}
+
+.table-bordered tr:nth-child(even) {
+    background-color: #000000; /* Color para las filas pares */
+}
+
+.table-bordered tr:hover {
+    background-color: #56563f77; /* Color cuando se pasa el mouse sobre una fila */
+    cursor: default;
+}
+
+/* Estilos responsivos */
+@media (max-width: 768px) {
+    .table-bordered {
+        width: 90%; /* Reducir el ancho para pantallas más pequeñas */
+        font-size: 16px;
+    }
+
+    .table-container {
+        padding: 10px;
+    }
+}
+
+
+/* Estilos para los inputs de tipo número */
+input.no-manual {
+    width: 100px;
+    padding: 10px;
+    font-size: 18px;
+    border: 2px solid #03a9f4;
+    border-radius: 5px;
+    text-align: center;
+    outline: none;
+    transition: border-color 0.3s ease;
+    background-color: #f9f9f9;
+}
+
+/* Estilo para cuando se hace hover o focus en el input */
+input.no-manual:focus,
+input.no-manual:hover {
+    border-color: #007bff;
+}
+
+/* Estilo para el contenedor de los inputs */
+.mb-3 {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    visibility: hidden;
+}
+
+input::-webkit-inner-spin-button,
+input::-webkit-outer-spin-button {
+    opacity: 1;
+    cursor: pointer;
+}
+
+input.no-manual[onkeydown="return false;"] {
+    cursor: not-allowed; /* Cambia el cursor para indicar que no se puede escribir manualmente */
+}
+
+/* Ocultar los botones predeterminados de incremento y decremento */
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+input[type="number"] {
+    -moz-appearance: textfield;
+}
+
+/* Estilo del contenedor personalizado del input */
+.custom-number-input .input-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Estilo del input de número */
+.custom-number-input input {
+    width: 60px;
+    height: 40px;
+    text-align: center;
+    font-size: 16px;
+    border: 2px solid #2198b6dc;
+    border-radius: 5px;
+    background-color: #05050583;
+    outline: none;
+    margin: 0 5px;
+    color: #ddd;
+}
+
+/* Estilo de los botones personalizados de incremento y decremento */
+.custom-number-input .btn-decrement,
+.custom-number-input .btn-increment {
+    display: inline-block;
+    width: 40px;
+    height: 40px;
+    background-color: #ffffff;
+    color: rgb(0, 0, 0);
+    font-size: 24px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+/* Efecto hover para los botones */
+.custom-number-input .btn-decrement:hover,
+.custom-number-input .btn-increment:hover {
+    background: #438d91;
+    color: #fff;
+    box-shadow: 0 0 5px #03e9f4, 0 0 25px #03e9f4, 0 0 50px #03e9f4, 0 0 100px #03e9f4;
+}
+
+/* Estilo adicional para centrar el label */
+.custom-number-input .form-label {
+    text-align: center;
+    display: block;
+    margin-bottom: 10px;
+}
+
+
+
+

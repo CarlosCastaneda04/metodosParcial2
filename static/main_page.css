@@ -1,0 +1,378 @@
+/* Estilos generales */
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: #000000;
+    color: #fff;
+    opacity: 0;
+    transition: opacity 1.5s ease-in;
+}
+
+body.loaded {
+    opacity: 1;
+}
+
+/* Animaciones para la línea */
+.animated-line {
+    border: none;
+    height: 2px;
+    background-color: transparent;
+    position: relative;
+    overflow: hidden;
+}
+
+.animated-line::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 2px;
+    background: linear-gradient(180deg, transparent, #03e9f4, transparent);
+    animation: anim-line 1s linear infinite;
+    animation-delay: 0.5s;
+}
+
+@keyframes anim-line {
+    0% {
+        left: -100%;
+    }
+    50%,
+    100% {
+        left: 100%;
+    }
+}
+
+/* Estilos de la navbar */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #000000;
+    padding: 10px 20px;
+    border-bottom: 1px solid #333;
+}
+
+.navbar-logo {
+    flex: 1;
+}
+
+.logo {
+    width: 80px;
+}
+
+.nav-links {
+    display: flex;
+    justify-content: center;
+    flex-grow: 2;
+    list-style-type: none;
+    gap: 30px;
+    margin-right: 20%;
+    padding: 0;
+}
+
+.nav-links li {
+    display: inline-block;
+}
+
+.nav-links a {
+    text-decoration: none;
+    color: #fff;
+    font-size: 16px;
+    padding: 5px 0;
+    position: relative;
+    transition: all 0.3s ease-in-out;
+}
+
+.nav-links a::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 3px;
+    background-color: white;
+    transform: scaleX(0);
+    transition: transform 0.3s ease-in-out;
+}
+
+.nav-links a:hover::after {
+    transform: scaleX(1);
+}
+
+/* Responsivo para la navbar */
+@media (max-width: 768px) {
+    .nav-links {
+        gap: 15px;
+    }
+
+    .nav-links a {
+        font-size: 14px;
+    }
+
+    .navbar-logo {
+        flex: none;
+        margin-right: 20px;
+    }
+
+    .logo {
+        width: 60px;
+    }
+}
+
+/* Estilos para las flip cards */
+.flip-card-container, .flip-card-container2 {
+    display: flex;
+    gap: 100px;
+    justify-content: center;
+    padding: 50px;
+    margin-bottom: 50px;
+    overflow: visible; /* Aseguramos que no recorte el contenido */
+}
+
+.flip-card-container2 {
+    display: flex;
+    gap: 100px;
+    justify-content: center;
+    padding: 160px;
+    margin-bottom: 50px;
+    overflow: visible; /* Aseguramos que no recorte el contenido */
+}
+
+.flip-card, .flip-card2 {
+    background-color: transparent;
+    width: 450px;
+    height: 800px;
+    perspective: 1200px; /* Ajustamos la perspectiva para evitar recortes */
+    overflow: visible;
+}
+
+.flip-card-inner, .flip-card-inner2 {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    transition: transform 0.6s ease;
+    transform-style: preserve-3d;
+}
+
+.flip-card:hover .flip-card-inner, .flip-card2:hover .flip-card-inner2 {
+    transform: rotateY(180deg);
+}
+
+.flip-card-front, .flip-card-back, .flip-card-front2, .flip-card-back2 {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    text-align: center;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    overflow: hidden; /* Aseguramos que no se recorte el contenido interno */
+}
+
+/* Configuración de rotación correcta */
+.flip-card-front {
+    background-color: rgba(0, 255, 255, 0.13);
+    color: rgb(255, 255, 255);
+    box-shadow: 0px 0px 20px 5px rgb(38, 120, 113);
+}
+
+.flip-card-back {
+    background-color: rgba(23, 59, 68, 0.253);
+    color: white;
+    transform: rotateY(180deg);
+    box-shadow: 0px 0px 50px 5px rgb(38, 120, 113);
+    overflow-y: auto;
+}
+
+.flip-card-front2 {
+    background-color: rgba(0, 255, 255, 0.13);
+    color: rgb(255, 255, 255);
+    box-shadow: 0px 0px 20px 5px rgb(38, 120, 113);
+}
+
+.flip-card-back2 {
+    background-color: rgba(23, 59, 68, 0.253);
+    color: white;
+    transform: rotateY(180deg);
+    box-shadow: 0px 0px 50px 5px rgb(38, 120, 113);
+    overflow-y: auto;
+}
+
+.flip-card-back p {
+    font-size: 0.8rem;
+    max-width: 100%;
+    word-wrap: break-word;
+    line-height: 1.4;
+    margin: 10px 0;
+}
+
+.flip-card-back2 p {
+    font-size: 0.8rem;
+    max-width: 100%;
+    word-wrap: break-word;
+    line-height: 1.4;
+    margin: 10px 0;
+}
+
+
+
+/* Ajustes para visibilidad en las flip cards */
+.flip-card-front, .flip-card-back, .flip-card-front2, .flip-card-back2 {
+    backface-visibility: hidden;
+}
+
+/* Ajustes de tamaño para h1 dentro de las tarjetas */
+.flip-card-front h1, .flip-card-back h1, .flip-card-front2 h1, .flip-card-back2 h1 {
+    font-size: 2rem;
+    max-width: 90%;
+    text-align: center;
+    word-wrap: break-word;
+}
+
+/* Responsividad para las flip cards */
+@media (max-width: 768px) {
+    .flip-card-container, .flip-card-container2 {
+        flex-direction: column;
+        gap: 20px;
+        padding: 20px;
+    }
+
+    .flip-card, .flip-card2 {
+        width: 300px;
+        height: 500px;
+    }
+
+    .flip-card-front, .flip-card-back, .flip-card-front2, .flip-card-back2 {
+        padding: 10px;
+        font-size: 1rem;
+    }
+
+    .flip-card-front h1, .flip-card-back h1, .flip-card-front2 h1, .flip-card-back2 h1 {
+        font-size: 1.5rem;
+    }
+}
+
+/* Animaciones */
+.fade-in, .fade-in2 {
+    opacity: 0;
+    animation: fadeIn 2s forwards;
+}
+
+@keyframes fadeIn {
+    to {
+        opacity: 1;
+    }
+}
+
+/* COFACTORES ESTILOS */
+.section-wrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    margin-top: 10px;
+}
+
+.section-content {
+    flex: 1;
+    max-width: 40%;
+    color: #ffffff;
+}
+
+.alinear2 {
+    display: block;
+    justify-content: center;
+    align-items: center;
+    text-align: left;
+    margin-top: 10px;
+    line-height: 2;
+}
+
+/* Estilos para ecuaciones */
+.equation2, .equation3 {
+    display: flex;
+    justify-content: left;
+    align-items: center;
+    text-align: center;
+    word-wrap: break-word;
+}
+
+.equations2, .ecuacion2 {
+    font-size: 1.5rem;
+    margin-top: 20px;
+}
+
+.fade-in2 {
+    opacity: 0;
+    animation: fadeIn2 2s forwards;
+}
+
+@keyframes fadeIn2 {
+    to {
+        opacity: 1;
+    }
+}
+
+/* Responsivo */
+@media (max-width: 768px) {
+    .section-wrapper {
+        flex-direction: column;
+    }
+
+    .section-content {
+        max-width: 100%;
+        margin-left: 0;
+    }
+
+    .flip-card-container2 {
+        margin-left: 0;
+        justify-content: center;
+    }
+
+    .flip-card2 {
+        width: 300px;
+        height: 500px;
+    }
+}
+
+/* Animaciones para la línea vertical */
+.custom-vr {
+    width: 2px;
+    height: 75vh;
+    background: linear-gradient(to bottom, #03e9f4, rgba(0, 0, 0, 0), #03e9f4);
+    margin: 0 auto;
+    background-size: 100% 200%;
+    animation: animate-vr 1.5s linear infinite;
+}
+
+@keyframes animate-vr {
+    0% {
+        background-position: 100% 0;
+    }
+    100% {
+        background-position: 100% 100%;
+    }
+}
+
+
+/* Estilos adicionales */
+.container, .container2 {
+    text-align: left;
+    font-family: "Homer Simpson UI";
+    line-height: 150%;
+}
+
+
+.titulos {
+    font-size: 4rem;
+    font-weight: bold;
+    color: #d8d8d8;
+    text-align: center;
+    text-shadow: 3px 3px 0px rgba(0, 0, 0, 0.2), 6px 6px 0px rgba(0, 0, 0, 0.2), 9px 9px 0px rgba(0, 0, 0, 0.2), 12px 12px 0px rgba(0, 0, 0, 0.2), 15px 15px 0px rgba(0, 0, 0, 0.2), 18px 18px 0px rgba(0, 0, 0, 0.2), 21px 21px 0px rgba(0, 0, 0, 0.2), 24px 24px 0px rgba(0, 0, 0, 0.2);
+}
+
