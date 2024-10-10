@@ -185,20 +185,35 @@
         crearMatriz('vectorC', 3, 1); // Para vector C de 3x1
 
         document.getElementById('reducir').addEventListener('click', () => {
-            const matrizA = obtenerMatriz('matriz1', 3, 3);
-            const vectorC = obtenerMatriz('vectorC', 3, 1);
+    const matrizA = obtenerMatriz('matriz1', 3, 3);
+    const vectorC = obtenerMatriz('vectorC', 3, 1);
 
-            fetch('/reducir', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ matrizA, vectorC }),
-            })
-            .then(response => response.json())
-            .then(resultado => mostrarResultado([resultado.x, resultado.Y, resultado.Z, resultado.determinante]))
-            .catch(error => console.error('Error:', error));
-        });
+    // Validar que todos los campos están llenos
+    if (matrizA.flat().includes(NaN) || vectorC.flat().includes(NaN)) {
+        alert('Por favor, llena todos los campos de la matriz y el vector antes de reducir.');
+        return;
+    }
+
+    // Realizar la solicitud al servidor
+    fetch('/reduccion', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ matrizA, vectorC }),
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Error en la solicitud al servidor');
+        }
+        return response.json();
+    })
+    .then(resultado => {
+        mostrarResultado([resultado.x, resultado.Y, resultado.Z, resultado.determinante]);
+    })
+    .catch(error => console.error('Error:', error));
+});
+
     </script>
 </body>
 </html>

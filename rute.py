@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, jsonify
 from cofactor import calcular_determinante_y_inversa  # Importa la función desde cofactor.py
 from multiplicacion import multiplicar_matrices  # Importa la función desde multiplicacion.py
+from reduccion import reducir_matrices
 
 app = Flask(__name__)
 
@@ -73,6 +74,28 @@ def multiplicar():
 
 @app.route('/reduccion')
 def reduccion():
+    return render_template('reduccion.html')
+
+@app.route('/reduccion', methods=['GET', 'POST'])
+def reduccion_view():
+    if request.method == 'POST':
+        try:
+            # Obtener los datos enviados en formato JSON
+            datos = request.get_json()
+            print(f"Datos recibidos: {datos}")  # Esto imprimirá los datos en la terminal
+            
+            matrizA = datos['matrizA']
+            vectorC = datos['vectorC']
+
+            # Realizar la operación de reducción de matrices
+            x, Y, Z, determinante = reducir_matrices(matrizA, [fila[0] for fila in vectorC])
+
+            # Retornar los resultados en formato JSON
+            return jsonify({'x': x, 'Y': Y, 'Z': Z, 'determinante': determinante})
+
+        except Exception as e:
+            return jsonify({'error': str(e)}), 500
+
     return render_template('reduccion.html')
 
 @app.route('/regresion')
