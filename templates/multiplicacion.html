@@ -159,16 +159,21 @@
         }
 
         function obtenerMatriz(id) {
-            const inputs = document.querySelectorAll(`#${id} input`);
-            const matriz = [];
-            for (let i = 0; i < 3; i++) {
-                matriz.push([]);
-                for (let j = 0; j < 3; j++) {
-                    matriz[i].push(parseInt(inputs[i * 3 + j].value) || 0);
-                }
+    const inputs = document.querySelectorAll(`#${id} input`);
+    const matriz = [];
+    for (let i = 0; i < 3; i++) {
+        matriz.push([]);
+        for (let j = 0; j < 3; j++) {
+            const valor = inputs[i * 3 + j].value;
+            if (valor === "") {
+                alert("Por favor, llena todos los campos de la matriz antes de multiplicar.");
+                return null;  // Si hay algún campo vacío, detener la función
             }
-            return matriz;
+            matriz[i].push(parseInt(valor) || 0);
         }
+    }
+    return matriz;
+}
 
         function mostrarResultado(resultado) {
             const resultadoDiv = document.getElementById('resultado');
@@ -186,20 +191,22 @@
         crearMatriz('matriz2');
 
         document.getElementById('multiplicar').addEventListener('click', () => {
-            const mat1 = obtenerMatriz('matriz1');
-            const mat2 = obtenerMatriz('matriz2');
+    const mat1 = obtenerMatriz('matriz1');
+    const mat2 = obtenerMatriz('matriz2');
 
-            fetch('/multiplicar', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ mat1, mat2 }),
-            })
-            .then(response => response.json())
-            .then(resultado => mostrarResultado(resultado))
-            .catch(error => console.error('Error:', error));
-        });
+    if (mat1 && mat2) {
+        fetch('/multiplicar', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ mat1, mat2 }),
+        })
+        .then(response => response.json())
+        .then(resultado => mostrarResultado(resultado))
+        .catch(error => console.error('Error:', error));
+    }
+});
     </script>
 </body>
 </html>

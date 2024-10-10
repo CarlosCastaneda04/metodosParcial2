@@ -1,5 +1,6 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, jsonify
 from cofactor import calcular_determinante_y_inversa  # Importa la función desde cofactor.py
+from multiplicacion import multiplicar_matrices  # Importa la función desde multiplicacion.py
 
 app = Flask(__name__)
 
@@ -7,7 +8,7 @@ app = Flask(__name__)
 def inicio():
     return render_template('inicio.html')
 
-# Asegúrate de que el endpoint y la función sean ambos 'cofactor'
+# Ruta para el cálculo del determinante e inversa
 @app.route('/cofactor', methods=['GET', 'POST'])
 def cofactor():
     if request.method == 'POST':
@@ -42,12 +43,33 @@ def cofactor():
 
     return render_template('cofactor.html')
 
-
-
-
+# Ruta para la multiplicación de matrices
 @app.route('/multiplicacion')
 def multiplicacion():
     return render_template('multiplicacion.html')
+
+# Ruta para procesar la multiplicación de matrices
+@app.route('/multiplicar', methods=['POST'])
+def multiplicar():
+    try:
+        # Obtener matrices desde el request
+        datos = request.get_json()
+        mat1 = datos['mat1']
+        mat2 = datos['mat2']
+
+        # Verificar que ambas matrices sean de 3x3 y no haya valores vacíos o no numéricos
+        for fila in mat1 + mat2:
+            if len(fila) != 3 or not all(isinstance(valor, int) for valor in fila):
+                return jsonify({'error': 'Todos los campos de las matrices deben estar completos y ser números enteros.'}), 400
+
+        # Multiplicar matrices
+        resultado = multiplicar_matrices(mat1, mat2)
+
+        # Enviar el resultado como JSON
+        return jsonify(resultado)
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
 
 @app.route('/reduccion')
 def reduccion():
