@@ -176,11 +176,12 @@
                 alert("Por favor, llena todos los campos de la matriz antes de multiplicar.");
                 return null;  // Si hay algún campo vacío, detener la función
             }
-            matriz[i].push(parseInt(valor) || 0);
+            matriz[i].push(parseFloat(valor) || 0);  // Usa parseFloat para números negativos y decimales
         }
     }
     return matriz;
 }
+
 
         function mostrarResultado(resultado) {
             const resultadoDiv = document.getElementById('resultado');
