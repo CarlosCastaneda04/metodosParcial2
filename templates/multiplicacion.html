@@ -145,18 +145,25 @@
     </div>
 
     <script>
-        function crearMatriz(id) {
-            const matriz = document.getElementById(id);
-            for (let i = 0; i < 9; i++) {
-                const input = document.createElement('input');
-                input.type = 'text'; // Cambiamos a "text" para que no haya spinners
-                input.placeholder = ''; // Dejar el input vacío para ingresar manualmente
-                input.addEventListener('input', (e) => { // Validar que solo se ingresen números
-                    e.target.value = e.target.value.replace(/[^0-9]/g, '');
-                });
-                matriz.appendChild(input);
+       function crearMatriz(id) {
+    const matriz = document.getElementById(id);
+    for (let i = 0; i < 9; i++) {
+        const input = document.createElement('input');
+        input.type = 'text'; // Permite texto para números negativos
+        input.placeholder = ''; // Dejar el input vacío para ingresar manualmente
+        input.addEventListener('input', (e) => { 
+            // Permitir solo números y el signo de menos
+            e.target.value = e.target.value.replace(/[^0-9-]/g, '');
+
+            // Asegurarse de que el signo "-" solo esté al principio
+            if (e.target.value.indexOf('-') > 0) {
+                e.target.value = e.target.value.replace(/-/g, ''); // Eliminar si está en otro lugar
             }
-        }
+        });
+        matriz.appendChild(input);
+    }
+}
+
 
         function obtenerMatriz(id) {
     const inputs = document.querySelectorAll(`#${id} input`);

@@ -146,29 +146,41 @@
 
     <script>
         function crearMatriz(id, numFilas, numColumnas) {
-            const matriz = document.getElementById(id);
-            for (let i = 0; i < numFilas * numColumnas; i++) {
-                const input = document.createElement('input');
-                input.type = 'text'; // Para que no aparezcan los spinners
-                input.placeholder = ''; 
-                input.addEventListener('input', (e) => {
-                    e.target.value = e.target.value.replace(/[^0-9]/g, ''); // Solo números
-                });
-                matriz.appendChild(input);
+    const matriz = document.getElementById(id);
+    for (let i = 0; i < numFilas * numColumnas; i++) {
+        const input = document.createElement('input');
+        input.type = 'text'; // Para permitir texto para números negativos
+        input.placeholder = ''; 
+        input.addEventListener('input', (e) => {
+            // Permitir solo números y el signo de menos
+            e.target.value = e.target.value.replace(/[^0-9-]/g, '');
+
+            // Asegurarse de que el signo "-" solo esté al principio
+            if (e.target.value.indexOf('-') > 0) {
+                e.target.value = e.target.value.replace(/-/g, ''); // Eliminar si está en otro lugar
             }
+        });
+        matriz.appendChild(input);
+    }
         }
 
         function obtenerMatriz(id, filas, columnas) {
-            const inputs = document.querySelectorAll(`#${id} input`);
-            const matriz = [];
-            for (let i = 0; i < filas; i++) {
-                matriz.push([]);
-                for (let j = 0; j < columnas; j++) {
-                    matriz[i].push(parseInt(inputs[i * columnas + j].value) || 0);
-                }
+    const inputs = document.querySelectorAll(`#${id} input`);
+    const matriz = [];
+    for (let i = 0; i < filas; i++) {
+        matriz.push([]);
+        for (let j = 0; j < columnas; j++) {
+            const valor = inputs[i * columnas + j].value;
+            if (valor === "") {
+                alert("Por favor, llena todos los campos de la matriz.");
+                return null;  // Detener si algún campo está vacío
             }
-            return matriz;
+            matriz[i].push(parseFloat(valor) || 0);  // Usa parseFloat para números negativos y decimales
         }
+    }
+    return matriz;
+}
+
 
         function mostrarResultado(resultado) {
             const resultadoDiv = document.getElementById('resultado');
