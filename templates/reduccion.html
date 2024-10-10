@@ -1,96 +1,231 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Reducción de Matrices</title>
-  <link rel="stylesheet" href="{{ url_for('static', filename='reduccion.css') }}">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reducción de Matrices</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap');
+
+        :root {
+            --primary-color: #4F46E5;
+            --primary-hover: #4338CA;
+            --bg-color: #F9FAFB;
+            --text-color: #1F2937;
+            --border-color: #E5E7EB;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            background-color: white;
+            padding: 2.5rem;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 48rem;
+        }
+
+        h1 {
+            font-size: 2.25rem;
+            font-weight: 300;
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        h2 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+        }
+
+        .matrices-container {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 2.5rem;
+            margin-bottom: 2rem;
+        }
+
+        @media (min-width: 768px) {
+            .matrices-container {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        .matrix {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2.5rem;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 0.5rem;
+            border: 1px solid var(--border-color);
+            border-radius: 0.375rem;
+            text-align: center;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            appearance: none;
+            -moz-appearance: textfield;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+        }
+
+        button {
+            width: 100%;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.375rem;
+            font-size: 1.125rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: var(--primary-hover);
+        }
+
+        #resultado {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2.5rem;
+        }
+
+        #resultado span {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.75rem;
+            background-color: #F3F4F6;
+            border: 1px solid var(--border-color);
+            border-radius: 0.375rem;
+            font-weight: 600;
+        }
+    </style>
 </head>
-
 <body>
-
-  <nav class="navbar">
-    <div class="navbar-logo">
-      <a href="{{ url_for('index')}}">
-        <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Logo" class="logo" />
-      </a>
-    </div>
-    <ul class="nav-links">
-      <li>
-        <a href="{{ url_for('index') }}">Matriz con Operaciones básicas</a>
-      </li>
-      <li>
-        <a href="{{ url_for('cofactor') }}">Metodo de Cofactores</a>
-      </li>
-      <li><a href="{{ url_for('reduccion') }}">Reducción de Sistemas de Ecuaciones</a></li>
-      <li><a href="{{ url_for('regresion') }}">Regresión Lineal</a></li>
-    </ul>
-  </nav>
-
-  <h1>Reducción de Matrices</h1>
-
-  <form method="POST" action="/reduccion">
-    <h3>Matriz A y Vector C</h3>
-
-    <div class="matrix-row">
-      <span>x</span>
-      <input type="number" name="matriz1_0_0" required class="matrix-input">
-      <span>y</span>
-      <input type="number" name="matriz1_0_1" required class="matrix-input">
-      <span>z</span>
-      <input type="number" name="matriz1_0_2" required class="matrix-input">
-      <span>=</span>
-      <input type="number" name="vector_c_0" required class="c-input">
+    <div class="container">
+        <h1>Reducción de Matrices 3x3</h1>
+        
+        <div class="matrices-container">
+            <div>
+                <h2>Matriz A</h2>
+                <div id="matriz1" class="matrix"></div>
+            </div>
+            <div>
+                <h2>Vector C</h2>
+                <div id="vectorC" class="matrix"></div>
+            </div>
+        </div>
+        
+        <button id="reducir">Reducir</button>
+        
+        <div>
+            <h2>Resultado</h2>
+            <div id="resultado"></div>
+        </div>
     </div>
 
-    <div class="matrix-row">
-      <span>x</span>
-      <input type="number" name="matriz1_1_0" required class="matrix-input">
-      <span>y</span>
-      <input type="number" name="matriz1_1_1" required class="matrix-input">
-      <span>z</span>
-      <input type="number" name="matriz1_1_2" required class="matrix-input">
-      <span>=</span>
-      <input type="number" name="vector_c_1" required class="c-input">
-    </div>
+    <script>
+        function crearMatriz(id, numFilas, numColumnas) {
+    const matriz = document.getElementById(id);
+    for (let i = 0; i < numFilas * numColumnas; i++) {
+        const input = document.createElement('input');
+        input.type = 'text'; // Para permitir texto para números negativos
+        input.placeholder = ''; 
+        input.addEventListener('input', (e) => {
+            // Permitir solo números y el signo de menos
+            e.target.value = e.target.value.replace(/[^0-9-]/g, '');
 
-    <div class="matrix-row">
-      <span>x</span>
-      <input type="number" name="matriz1_2_0" required class="matrix-input">
-      <span>y</span>
-      <input type="number" name="matriz1_2_1" required class="matrix-input">
-      <span>z</span>
-      <input type="number" name="matriz1_2_2" required class="matrix-input">
-      <span>=</span>
-      <input type="number" name="vector_c_2" required class="c-input">
-    </div>
+            // Asegurarse de que el signo "-" solo esté al principio
+            if (e.target.value.indexOf('-') > 0) {
+                e.target.value = e.target.value.replace(/-/g, ''); // Eliminar si está en otro lugar
+            }
+        });
+        matriz.appendChild(input);
+    }
+        }
 
-    <div class="text-center mt-4 login-box">
-      <button type="submit" class="btn btn-primary">
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        Calcular reduccion
-      </button>
-    </div>
-  </form>
+        function obtenerMatriz(id, filas, columnas) {
+    const inputs = document.querySelectorAll(`#${id} input`);
+    const matriz = [];
+    for (let i = 0; i < filas; i++) {
+        matriz.push([]);
+        for (let j = 0; j < columnas; j++) {
+            const valor = inputs[i * columnas + j].value;
+            if (valor === "") {
+                alert("Por favor, llena todos los campos de la matriz.");
+                return null;  // Detener si algún campo está vacío
+            }
+            matriz[i].push(parseFloat(valor) || 0);  // Usa parseFloat para números negativos y decimales
+        }
+    }
+    return matriz;
+}
 
-  <div class="resultados-container">
-    {% if determinante is not none and x and Y and Z %}
-    <h2>Resultados</h2>
-    <h3>Determinante de A: {{ determinante }}</h3>
-    <p>x = {{ x }}</p>
-    <p>Y = {{ Y }}</p>
-    <p>Z = {{ Z }}</p>
-    {% endif %}
-  </div>
 
-  {% if error %}
-  <p class="error-message">{{ error }}</p>
-  {% endif %}
+        function mostrarResultado(resultado) {
+            const resultadoDiv = document.getElementById('resultado');
+            resultadoDiv.innerHTML = '';
+            const valores = ["x", "Y", "Z", "Determinante"];
+            for (let i = 0; i < valores.length; i++) {
+                const span = document.createElement('span');
+                span.textContent = `${valores[i]}: ${resultado[i]}`;
+                resultadoDiv.appendChild(span);
+            }
+        }
 
+        crearMatriz('matriz1', 3, 3); // Para matriz A de 3x3
+        crearMatriz('vectorC', 3, 1); // Para vector C de 3x1
+
+        document.getElementById('reducir').addEventListener('click', () => {
+    const matrizA = obtenerMatriz('matriz1', 3, 3);
+    const vectorC = obtenerMatriz('vectorC', 3, 1);
+
+    // Validar que todos los campos están llenos
+    if (matrizA.flat().includes(NaN) || vectorC.flat().includes(NaN)) {
+        alert('Por favor, llena todos los campos de la matriz y el vector antes de reducir.');
+        return;
+    }
+
+    // Realizar la solicitud al servidor
+    fetch('/reduccion', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ matrizA, vectorC }),
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Error en la solicitud al servidor');
+        }
+        return response.json();
+    })
+    .then(resultado => {
+        mostrarResultado([resultado.x, resultado.Y, resultado.Z, resultado.determinante]);
+    })
+    .catch(error => console.error('Error:', error));
+});
+
+    </script>
 </body>
-
 </html>

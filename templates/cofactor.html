@@ -1,128 +1,117 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Calculadora de Cofactor</title>
-  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
-  <link rel="stylesheet" href="{{ url_for('static', filename='cofactor.css') }}" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cálculo de Determinante e Inversa</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #f4f6f9;
+            margin-top: 30px;
+        }
+        .container {
+            max-width: 700px;
+        }
+        h1 {
+            color: #007bff;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .form-group {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        .form-group input {
+            width: 60px;
+            height: 50px;
+            text-align: center;
+            font-size: 1.5em;
+            -moz-appearance: textfield; /* Quitar las flechas de los inputs */
+        }
+        .form-group input::-webkit-outer-spin-button,
+        .form-group input::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+        .btn {
+            width: 100%;
+            margin-top: 20px;
+        }
+        footer {
+            margin-top: 40px;
+            padding: 20px;
+            background-color: #343a40;
+            color: #fff;
+            text-align: center;
+        }
+    </style>
 </head>
-
 <body>
 
-  <script>
-    window.addEventListener('load', function () {
-      document.body.classList.add('loaded');
-    });
-  </script>
+    <div class="container">
+        <h1>Cálculo de Determinante e Inversa</h1>
+        <form method="POST" action="/cofactor">
+            <div class="form-group">
+                <!-- Fila 1 -->
+                <input type="number" class="form-control" name="a00" value="{{ request.form.get('a00', '') }}">
+                <input type="number" class="form-control" name="a01" value="{{ request.form.get('a01', '') }}">
+                <input type="number" class="form-control" name="a02" value="{{ request.form.get('a02', '') }}">
+            </div>
+            <div class="form-group">
+                <!-- Fila 2 -->
+                <input type="number" class="form-control" name="a10" value="{{ request.form.get('a10', '') }}">
+                <input type="number" class="form-control" name="a11" value="{{ request.form.get('a11', '') }}">
+                <input type="number" class="form-control" name="a12" value="{{ request.form.get('a12', '') }}">
+            </div>
+            <div class="form-group">
+                <!-- Fila 3 -->
+                <input type="number" class="form-control" name="a20" value="{{ request.form.get('a20', '') }}">
+                <input type="number" class="form-control" name="a21" value="{{ request.form.get('a21', '') }}">
+                <input type="number" class="form-control" name="a22" value="{{ request.form.get('a22', '') }}">
+            </div>
 
+            <button type="submit" class="btn btn-primary">Calcular Determinante e Inversa</button>
+            <button type="button" class="btn btn-secondary" onclick="limpiarCampos()">Limpiar Campos</button>
+        </form>
 
-<nav class="navbar">
-  <!-- Logo de la empresa -->
-  <div class="navbar-logo">
-      <a href="{{ url_for('index')}}">
-          <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Logo" class="logo" />
-      </a>
-  </div>
-  <!-- Navbar -->
-  <ul class="nav-links">
-      <li>
-          <a href="{{ url_for('index') }}">Matriz con Operaciones básicas</a>
-      </li>
-      <li>
-          <a href="{{ url_for('cofactor') }}">Metodo de Cofactores</a>
-      </li>
-      <li><a href="{{ url_for('reduccion') }}">Reducción de Sistemas de Ecuaciones</a></li>
-      <li><a href="{{ url_for('regresion') }}">Regresión Lineal</a></li>
-  </ul>
-</nav>
-  <h1 style="text-align: center">Calculadora de Cofactor</h1>
+        {% if error %}
+        <div class="alert alert-danger mt-4">
+            {{ error }}
+        </div>
+        {% endif %}
 
-  <form class="mb-3" method="POST" style="text-align: center">
-    <table class="custom-number-input">
-      <!-- Entradas para la matriz -->
-      <tr>
-        <td>
-          <input class="matrix-input" type="text" name="cell00" required />
-        </td>
-        <td>
-          <input class="matrix-input" type="text" name="cell01" required />
-        </td>
-        <td>
-          <input class="matrix-input" type="text" name="cell02" required />
-        </td>
-      </tr>
-      <tr>
-        <td>
-          <input class="matrix-input" type="text" name="cell10" required />
-        </td>
-        <td>
-          <input class="matrix-input" type="text" name="cell11" required />
-        </td>
-        <td>
-          <input class="matrix-input" type="text" name="cell12" required />
-        </td>
-      </tr>
-      <tr>
-        <td>
-          <input class="matrix-input" type="text" name="cell20" required />
-        </td>
-        <td>
-          <input class="matrix-input" type="text" name="cell21" required />
-        </td>
-        <td>
-          <input class="matrix-input" type="text" name="cell22" required />
-        </td>
-      </tr>
-    </table>
+        {% if det is not none %}
+        <div class="mt-4">
+            <h3>Determinante: {{ det }}</h3>
 
-    <div class="text-center mt-4 login-box">
-      <button type="submit" class="btn btn-primary" onclick="enviarFormulario()">
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        Calcular Cofactores
-      </button>
+            {% if invM %}
+            <h3>Matriz Inversa:</h3>
+            <table class="table table-bordered">
+                {% for fila in invM %}
+                <tr>
+                    {% for valor in fila %}
+                    <td>{{ valor }}</td>
+                    {% endfor %}
+                </tr>
+                {% endfor %}
+            </table>
+            {% endif %}
+        </div>
+        {% endif %}
     </div>
 
-  </form>
+    <footer>
+        <p>&copy; 2024 Proyecto de Matrices con Flask</p>
+    </footer>
 
-  <!-- Mostrar error si ocurre -->
-  {% if error %}
-  <div class="result-container">
-    <p class="error">{{ error }}</p>
-  </div>
-  {% endif %}
-
-  <!-- Mostrar determinante si está disponible -->
-  {% if det is not none %}
-  <div class="result-container">
-    <div class="result">
-      <h3>Determinante: {{ det }}</h3>
-    </div>
-  </div>
-  {% endif %}
-
-  <!-- Mostrar matriz inversa si está disponible -->
-  {% if invM %}
-  <div class="result-container">
-    <div class="result">
-      <h3>Matriz Inversa:</h3>
-      <table>
-        {% for row in invM %}
-        <tr>
-          {% for cell in row %}
-          <td>{{ cell }}</td>
-          {% endfor %}
-        </tr>
-        {% endfor %}
-      </table>
-    </div>
-  </div>
-  {% endif %}
+    <script>
+        function limpiarCampos() {
+            document.querySelectorAll('input').forEach(input => input.value = '');
+        }
+    </script>
 
 </body>
-
 </html>

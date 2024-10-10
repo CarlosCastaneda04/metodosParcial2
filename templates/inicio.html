@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Operaciones con Matrices</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <!-- Custom CSS for Styling -->
+    <style>
+        body {
+            background-color: #f4f6f9;
+        }
+        .navbar {
+            background-color: #343a40;
+        }
+        .navbar-brand {
+            color: #ffffff !important;
+        }
+        .card {
+            margin: 1rem 0;
+            transition: transform 0.2s ease-in-out;
+        }
+        .card:hover {
+            transform: scale(1.05);
+        }
+        .container {
+            margin-top: 50px;
+        }
+        h1 {
+            color: #343a40;
+        }
+        footer {
+            margin-top: 50px;
+            padding: 20px;
+            background-color: #343a40;
+            color: #fff;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <a class="navbar-brand" href="#">Operaciones con Matrices</a>
+    </nav>
+
+    <!-- Container for Cards -->
+    <div class="container">
+        <h1 class="text-center mb-4">Selecciona una Operación</h1>
+        <div class="row">
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-body text-center">
+                        <h5 class="card-title">Cálculo de Cofactor</h5>
+                        <p class="card-text">Realiza el cálculo del cofactor de una matriz.</p>
+                        <a href="{{ url_for('cofactor') }}" class="btn btn-primary">Ir a Cofactor</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-body text-center">
+                        <h5 class="card-title">Multiplicación de Matrices</h5>
+                        <p class="card-text">Multiplica dos matrices de forma sencilla.</p>
+                        <a href="{{ url_for('multiplicacion') }}" class="btn btn-primary">Ir a Multiplicación</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-body text-center">
+                        <h5 class="card-title">Reducción de Matrices</h5>
+                        <p class="card-text">Reduce una matriz mediante operaciones lineales.</p>
+                        <a href="{{ url_for('reduccion') }}" class="btn btn-primary">Ir a Reducción</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-body text-center">
+                        <h5 class="card-title">Regresión</h5>
+                        <p class="card-text">Realiza cálculos de regresión para tus datos.</p>
+                        <a href="{{ url_for('regresion') }}" class="btn btn-primary">Ir a Regresión</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-body text-center">
+                        <h5 class="card-title">Resta de Matrices</h5>
+                        <p class="card-text">Resta matrices de forma rápida y eficiente.</p>
+                        <a href="{{ url_for('resta') }}" class="btn btn-primary">Ir a Resta</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-body text-center">
+                        <h5 class="card-title">Suma de Matrices</h5>
+                        <p class="card-text">Suma matrices de forma sencilla.</p>
+                        <a href="{{ url_for('suma') }}" class="btn btn-primary">Ir a Suma</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-body text-center">
+                        <h5 class="card-title">Operación Especial</h5>
+                        <p class="card-text">Operaciones adicionales en rute.py</p>
+                        <a href="{{ url_for('rute') }}" class="btn btn-primary">Ir a Operación Especial</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2024 Proyecto de Matrices con Flask</p>
+    </footer>
+
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

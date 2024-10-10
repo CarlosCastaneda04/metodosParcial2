@@ -1,131 +1,207 @@
 <!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Regresión Lineal por Mínimos Cuadrados</title>
-    <link
-      rel="stylesheet"
-      href="{{ url_for('static', filename='regresion.css') }}"
-    />
-    <script>
-      function generarInputs() {
-        const numInputs = document.getElementById("num_inputs").value; // Obtener el número de inputs deseados
-        const xContainer = document.getElementById("x_container");
-        const yContainer = document.getElementById("y_container");
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Regresión Lineal</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap');
 
-        xContainer.innerHTML = "";
-        yContainer.innerHTML = "";
-
-        for (let i = 0; i < numInputs; i++) {
-          const inputX = document.createElement("input");
-          inputX.type = "text";
-          inputX.name = "x_values[]";
-          inputX.className = "input";
-          inputX.required = true;
-          xContainer.appendChild(inputX);
-
-          if (i < numInputs - 1) {
-            xContainer.appendChild(document.createTextNode(", "));
-          }
-
-          const inputY = document.createElement("input");
-          inputY.type = "text";
-          inputY.name = "y_values[]";
-          inputY.className = "input";
-          inputY.required = true;
-          yContainer.appendChild(inputY);
-
-          if (i < numInputs - 1) {
-            yContainer.appendChild(document.createTextNode(", "));
-          }
+        :root {
+            --primary-color: #4F46E5;
+            --primary-hover: #4338CA;
+            --bg-color: #F9FAFB;
+            --text-color: #1F2937;
+            --border-color: #E5E7EB;
         }
-      }
 
-      window.addEventListener("load", function () {
-        document.body.classList.add("loaded");
-      });
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            background-color: white;
+            padding: 2.5rem;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 48rem;
+        }
+
+        h1 {
+            font-size: 2.25rem;
+            font-weight: 300;
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        h2 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+        }
+
+        .input-container {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .input-group {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr); /* Ajuste a 5 columnas para alineación */
+            gap: 1rem;
+        }
+
+        input[type="text"] {
+            flex: 1;
+            padding: 0.5rem;
+            border: 1px solid var(--border-color);
+            border-radius: 0.375rem;
+            text-align: center;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+        }
+
+        button {
+            width: 100%;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.375rem;
+            font-size: 1.125rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: var(--primary-hover);
+        }
+
+        #resultado {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        #resultado span {
+            display: block;
+            padding: 0.75rem;
+            background-color: #F3F4F6;
+            border: 1px solid var(--border-color);
+            border-radius: 0.375rem;
+            font-weight: 600;
+
+        }
+
+        .input-group {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr); /* Distribuir en 5 columnas */
+    gap: 0.5rem; /* Reducir el espacio entre los inputs */
+}
+
+.container {
+    max-width: 40rem; /* Ajustar el ancho máximo del contenedor */
+}
+
+input[type="text"] {
+    width: 100%;
+    padding: 0.5rem;
+    border: 1px solid var(--border-color);
+    border-radius: 0.375rem;
+    text-align: center;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+}
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Regresión Lineal</h1>
+        
+        <div class="input-container">
+            <div>
+                <h2>Valores de X</h2>
+                <div id="x-valores" class="input-group"></div>
+            </div>
+            <div>
+                <h2>Valores de Y</h2>
+                <div id="y-valores" class="input-group"></div>
+            </div>
+        </div>
+        
+        <button id="calcular">Calcular Regresión</button>
+        
+        <div id="resultado">
+            <h2>Resultado</h2>
+        </div>
+    </div>
+
+    <script>
+        function crearInputs(id, cantidad) {
+            const container = document.getElementById(id);
+            for (let i = 0; i < cantidad; i++) {
+                const input = document.createElement('input');
+                input.type = 'text';
+                input.placeholder = '0';
+                input.addEventListener('input', (e) => {
+                    e.target.value = e.target.value.replace(/[^0-9.-]/g, '');
+                });
+                container.appendChild(input);
+            }
+        }
+
+        function obtenerValores(id) {
+            const inputs = document.querySelectorAll(`#${id} input`);
+            return Array.from(inputs).map(input => parseFloat(input.value) || 0);
+        }
+
+        function mostrarResultado(m, b, r) {
+            const resultadoDiv = document.getElementById('resultado');
+            resultadoDiv.innerHTML = `
+                <span>Ecuación de la recta: y = ${b} + ${m}x</span>
+                <span>Coeficiente de correlación (r): ${r}</span>
+                <span>Gráfica guardada en: <a href="/static/grafica.png" target="_blank">Ver gráfica</a></span>
+            `;
+        }
+
+        crearInputs('x-valores', 5); // Crear 5 inputs para X
+        crearInputs('y-valores', 5); // Crear 5 inputs para Y
+
+        document.getElementById('calcular').addEventListener('click', () => {
+            const xValores = obtenerValores('x-valores');
+            const yValores = obtenerValores('y-valores');
+
+            fetch('/calcular_regresion', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ xValores, yValores }),
+            })
+            .then(response => response.json())
+            .then(resultado => mostrarResultado(resultado.m, resultado.b, resultado.r))
+            .catch(error => console.error('Error:', error));
+        });
     </script>
-  </head>
-  <body>
-    <nav class="navbar">
-      <div class="navbar-logo">
-        <a href="{{ url_for('index')}}">
-          <img
-            src="{{ url_for('static', filename='images/logo.png') }}"
-            alt="Logo"
-            class="logo"
-          />
-        </a>
-      </div>
-      <ul class="nav-links">
-        <li>
-          <a href="{{ url_for('index') }}">Matriz con Operaciones básicas</a>
-        </li>
-        <li>
-          <a href="{{ url_for('cofactor') }}">Metodo de Cofactores</a>
-        </li>
-        <li>
-          <a href="{{ url_for('reduccion') }}"
-            >Reducción de Sistemas de Ecuaciones</a
-          >
-        </li>
-        <li><a href="{{ url_for('regresion') }}">Regresión Lineal</a></li>
-      </ul>
-    </nav>
-
-    <h1>Regresión Lineal por Mínimos Cuadrados</h1>
-
-    <form id="input_form" action="javascript:void(0);">
-      <label for="num_inputs" class="valores">N valores:</label><br />
-      <input type="number" id="num_inputs" name="num_inputs" min="1" required />
-
-      <div class="text-center mt-4 login-box">
-        <button onclick="generarInputs()" type="submit" class="btn btn-primary">
-          <span></span>
-          <span></span>
-          <span></span>
-          <span></span>
-          OK
-        </button>
-      </div>
-    </form>
-
-    <br />
-
-    <form action="/regresion_calculo" method="POST">
-      <h3 class="ingresarvalores">Ingrese los valores de X y de Y:</h3>
-
-      <label class="valoresxy">Valores de X:</label>
-      <div id="x_container"></div>
-
-      <br /><br />
-
-      <label class="valoresxy">Valores de Y:</label>
-      <div id="y_container"></div>
-
-      <br /><br />
-
-      <div class="text-center mt-4 login-box">
-        <button type="submit" class="btn btn-primary">
-          <span></span>
-          <span></span>
-          <span></span>
-          <span></span>
-          Calcular Regresion
-        </button>
-      </div>
-    </form>
-
-    {% if m and b %}
-    <h3>Resultados:</h3>
-    <p>Pendiente (m): {{ m }}</p>
-    <p>Intersección (b): {{ b }}</p>
-    <img src="{{ plot_url }}" alt="Gráfico de Regresión Lineal" />
-    {% endif %}
-
-    {% if error %}
-    <p style="color: red">{{ error }}</p>
-    {% endif %}
-  </body>
+</body>
 </html>
