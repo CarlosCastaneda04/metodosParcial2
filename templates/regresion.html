@@ -58,7 +58,7 @@
 
         .input-group {
             display: grid;
-            grid-template-columns: repeat(5, 1fr); /* Ajuste a 5 columnas para alineación */
+            grid-template-columns: repeat(5, 1fr);
             gap: 1rem;
         }
 
@@ -109,28 +109,26 @@
             border: 1px solid var(--border-color);
             border-radius: 0.375rem;
             font-weight: 600;
-
         }
 
-        .input-group {
-    display: grid;
-    grid-template-columns: repeat(5, 1fr); /* Distribuir en 5 columnas */
-    gap: 0.5rem; /* Reducir el espacio entre los inputs */
-}
+        .example-container {
+            background-color: #F9FAFB;
+            padding: 2.5rem;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin-top: 2rem;
+        }
 
-.container {
-    max-width: 40rem; /* Ajustar el ancho máximo del contenedor */
-}
+        .example-group {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+        }
 
-input[type="text"] {
-    width: 100%;
-    padding: 0.5rem;
-    border: 1px solid var(--border-color);
-    border-radius: 0.375rem;
-    text-align: center;
-    font-size: 1rem;
-    transition: all 0.3s ease;
-}
+        .example-resultado span {
+            font-weight: 600;
+            color: var(--primary-color);
+        }
 
     </style>
 </head>
@@ -153,6 +151,25 @@ input[type="text"] {
         
         <div id="resultado">
             <h2>Resultado</h2>
+        </div>
+    </div>
+
+    <!-- Sección de ejemplo preestablecido -->
+    <div class="example-container">
+        <h1>Ejemplo de Regresión Lineal</h1>
+        <div class="example-group">
+            <h2>Valores de X</h2>
+            <span>1, 2, 3, 4, 5</span>
+        </div>
+        <div class="example-group">
+            <h2>Valores de Y</h2>
+            <span>2, 4, 5, 4, 5</span>
+        </div>
+
+        <div class="example-resultado">
+            <h2>Resultado</h2>
+            <span>Ecuación de la recta: y = 2.6 + 0.3x</span><br>
+            <span>Coeficiente de correlación (r): 0.7071</span>
         </div>
     </div>
 
