@@ -1,7 +1,9 @@
 from flask import Flask, render_template, request, jsonify
 from cofactor import calcular_determinante_y_inversa  # Importa la función desde cofactor.py
 from multiplicacion import multiplicar_matrices  # Importa la función desde multiplicacion.py
-from reduccion import reducir_matrices
+from reduccion import reducir_matrices  # Importa la función desde reduccion.py
+from regresion import calcular_regresion, graficar_regresion  # Asegúrate de que estas funciones existan en regresion.py
+import os  # Importa la biblioteca os para manejar rutas de archivos
 
 app = Flask(__name__)
 
@@ -101,6 +103,27 @@ def reduccion_view():
 @app.route('/regresion')
 def regresion():
     return render_template('regresion.html')
+
+# Ruta para la regresión lineal
+@app.route('/calcular_regresion', methods=['POST'])
+def calcular_regresion_view():
+    try:
+        datos = request.get_json()
+        xValores = datos['xValores']
+        yValores = datos['yValores']
+        
+        # Realizar el cálculo de la regresión
+        m, b, r = calcular_regresion(xValores, yValores)
+        
+        # Graficar la regresión y guardar la imagen
+        output_path = os.path.join('static', 'grafica.png')
+        graficar_regresion(xValores, yValores, m, b, r, output_path)
+        
+        # Retornar los resultados en formato JSON
+        return jsonify({'m': m, 'b': b, 'r': r})
+    
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
 
 @app.route('/resta')
 def resta():
