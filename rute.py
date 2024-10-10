@@ -4,6 +4,7 @@ from multiplicacion import multiplicar_matrices  # Importa la función desde mul
 from reduccion import reducir_matrices  # Importa la función desde reduccion.py
 from regresion import calcular_regresion, graficar_regresion  # Asegúrate de que estas funciones existan en regresion.py
 from resta import restar_matrices  # Importa la función de resta de matrices
+from suma import sumar_matrices
 import os  # Importa la biblioteca os para manejar rutas de archivos
 
 app = Flask(__name__)
@@ -155,6 +156,28 @@ def restar_matrices_view():
 @app.route('/suma')
 def suma():
     return render_template('suma.html')
+
+@app.route('/sumar_matrices', methods=['POST'])
+def sumar_matrices_view():
+    try:
+        # Obtener matrices desde el request
+        datos = request.get_json()
+        mat1 = datos['mat1']
+        mat2 = datos['mat2']
+
+        # Verificar que ambas matrices sean de 3x3 y no haya valores vacíos o no numéricos
+        for fila in mat1 + mat2:
+            if len(fila) != 3 or not all(isinstance(valor, (int, float)) for valor in fila):
+                return jsonify({'error': 'Todos los campos de las matrices deben estar completos y ser números válidos.'}), 400
+
+        # Sumar matrices
+        resultado = sumar_matrices(mat1, mat2)
+
+        # Enviar el resultado como JSON
+        return jsonify(resultado)
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
 
 @app.route('/rute')
 def rute():
